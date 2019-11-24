@@ -71,7 +71,7 @@ public class AlarmMessageDaoImpl implements AlarmMessageDao {
 
     @Override
     public List<AlarmMessage> getAdministrativeAlarmMessages() {
-        return Arrays.asList(ao.find(AlarmMessage.class, "IS_ADMINISTRATIVE = TRUE"));
+        return Arrays.asList(ao.find(AlarmMessage.class, "ADMINISTRATIVE = TRUE"));
     }
 
     @Override
@@ -81,7 +81,7 @@ public class AlarmMessageDaoImpl implements AlarmMessageDao {
 
     @Override
     public List<AlarmMessage> getActiveAlarmMessages() {
-        return Arrays.asList(ao.find(AlarmMessage.class, "IS_ACKNOWLEDGED = FALSE"));
+        return Arrays.asList(ao.find(AlarmMessage.class, "ACKNOWLEDGED = FALSE"));
     }
 
     @Override
