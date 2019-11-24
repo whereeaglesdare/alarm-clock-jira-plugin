@@ -24,5 +24,10 @@
     <web-panel key="custom-profile-panel" location="webpanels.user.profile.summary.custom" weight="150">
         <resource name="view" type="velocity" location="templates/profile/user-alarms.vm"/>
     </web-panel>
-    
+
+    <ao key="ao-module">
+        <description>Alarm clock plugin AO relations</description>
+        <entity>by.exposit.alarm.ao.entity.AlarmMessage</entity>
+    </ao>
+
 </atlassian-plugin>
