@@ -1,1 +1,4 @@
+$webResourceManager.requireResource("by.exposit.alarm.alarm-clock-plugin:user-profile-webresource")
+
 <h3>Alarms</h3>
+<input class="aui-date-picker" id="demo-range-2" type="date" max="2012-01-25" min="2011-12-25" />
