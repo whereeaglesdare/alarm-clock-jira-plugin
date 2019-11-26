@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Implementation of {@link by.exposit.alarm.ao.dao.AlarmMessageDao}
+ */
 @Component
 public class AlarmMessageDaoImpl implements AlarmMessageDao {
 
@@ -30,6 +33,7 @@ public class AlarmMessageDaoImpl implements AlarmMessageDao {
         alarm.setAlarmDate(alertDate);
         alarm.setAdministrative(isAdministrative);
         alarm.setUserId(userId);
+        alarm.setAcknowledged(Boolean.FALSE);
         alarm.save();
         return alarm;
     }
@@ -46,22 +50,6 @@ public class AlarmMessageDaoImpl implements AlarmMessageDao {
     @Override
     public List<AlarmMessage> getAlarmMessagesbyUserId(Long userId) {
         return Arrays.asList(ao.find(AlarmMessage.class, "USER_ID = ?", userId));
-    }
-
-    @Override
-    public List<AlarmMessage> bulkCreateAlarmMessages(List<Long> userIds, String message,
-                                               Date alertDate) {
-        List<AlarmMessage> alarmMessages = new ArrayList<>();
-        for(Long userId: userIds) {
-            AlarmMessage alarm = ao.create(AlarmMessage.class);
-            alarm.setDescription(message);
-            alarm.setAlarmDate(alertDate);
-            alarm.setAdministrative(true);
-            alarm.setUserId(userId);
-            alarm.save();
-            alarmMessages.add(alarm);
-        }
-        return alarmMessages;
     }
 
     @Override
