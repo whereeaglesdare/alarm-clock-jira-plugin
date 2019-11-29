@@ -20,6 +20,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of AlaemMessageService
+ *
+ */
 @Component
 public class AlarmMessageServiceImpl implements AlarmMessageService {
     @Autowired
@@ -32,16 +36,11 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
     @ComponentImport
     private DateTimeFormatterFactory formatterFactory;
 
-    private Date convertDateToUtc(Date date, ApplicationUser user) {
+    private Date convertToDate(String date, ApplicationUser user) {
         DateTimeFormatter formatter = formatterFactory.formatter().forUser(user);
         DateTimeZone dtz = DateTimeZone.forTimeZone(formatter.getZone());
-        return new Date(dtz.convertLocalToUTC(date.getTime(), true));
-    }
-
-    private Date convertDateToLocalTime(Date date, ApplicationUser user) {
-        DateTimeFormatter formatter = formatterFactory.formatter().forUser(user);
-        LocalDateTime zonedDate = new LocalDateTime(date, DateTimeZone.forTimeZone(formatter.getZone()));
-        return zonedDate.toDateTime(DateTimeZone.UTC).toDate();
+        DateTime dt = new DateTime(date, dtz);
+        return dt.toDate();
     }
 
     private void checkDate(Date date) throws AlarmException {
@@ -58,10 +57,10 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
 
     @Override
     public int createAlarmMessage(ApplicationUser user, AlarmMessageDto alarmMessageDto) throws AlarmException {
-        Date utcDate = convertDateToUtc(alarmMessageDto.getAlarmDate(), user);
+        Date utcDate = convertToDate(alarmMessageDto.getAlarmDate(), user);
         checkDate(utcDate);
         return alarmMessageDao.createAlertMessage(user.getId(),
-                alarmMessageDto.getDescription(), convertDateToUtc(alarmMessageDto.getAlarmDate(), user),
+                alarmMessageDto.getDescription(), utcDate,
                 alarmMessageDto.getIsAdministrative()).getID();
     }
 
@@ -74,7 +73,7 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
         }
         checkUserPermission(alarmMessage, user);
         return mapper.toAlertMessageDto(alarmMessageDao.updateAlarmMessage(alarmId,
-                alarmMessageDto.getDescription(), alarmMessageDto.getAlarmDate()));
+                alarmMessageDto.getDescription(), convertToDate(alarmMessageDto.getAlarmDate(), user)));
     }
 
     @Override
