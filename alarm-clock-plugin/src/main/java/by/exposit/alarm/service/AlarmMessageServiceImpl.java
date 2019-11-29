@@ -5,8 +5,6 @@ import by.exposit.alarm.ao.entity.AlarmMessage;
 import by.exposit.alarm.dto.exception.AlarmException;
 import by.exposit.alarm.dto.mapper.AlarmMessageMapper;
 import by.exposit.alarm.dto.model.AlarmMessageDto;
-import com.atlassian.jira.bc.EntityNotFoundException;
-import com.atlassian.jira.bc.ValidationErrorsException;
 import com.atlassian.jira.datetime.DateTimeFormatter;
 import com.atlassian.jira.datetime.DateTimeFormatterFactory;
 import com.atlassian.jira.user.ApplicationUser;
@@ -36,8 +34,8 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
 
     private Date convertDateToUtc(Date date, ApplicationUser user) {
         DateTimeFormatter formatter = formatterFactory.formatter().forUser(user);
-        LocalDateTime zonedDate = new LocalDateTime(date, DateTimeZone.forTimeZone(formatter.getZone()));
-        return zonedDate.toDateTime(DateTimeZone.UTC).toDate();
+        DateTimeZone dtz = DateTimeZone.forTimeZone(formatter.getZone());
+        return new Date(dtz.convertLocalToUTC(date.getTime(), true));
     }
 
     private Date convertDateToLocalTime(Date date, ApplicationUser user) {
@@ -47,7 +45,7 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
     }
 
     private void checkDate(Date date) throws AlarmException {
-        if (new DateTime(date).compareTo(DateTime.now(DateTimeZone.UTC)) < 0 ){
+        if (new DateTime(date).compareTo(DateTime.now(DateTimeZone.UTC)) < 0 ) {
             throw new AlarmException("Incorrect date value");
         }
     }
@@ -58,13 +56,12 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
         }
     }
 
-
     @Override
-    public int createAlarmMessage(ApplicationUser user, AlarmMessageDto alarmMessageDto) throws AlarmException{
+    public int createAlarmMessage(ApplicationUser user, AlarmMessageDto alarmMessageDto) throws AlarmException {
         Date utcDate = convertDateToUtc(alarmMessageDto.getAlarmDate(), user);
         checkDate(utcDate);
         return alarmMessageDao.createAlertMessage(user.getId(),
-                alarmMessageDto.getDescription(), alarmMessageDto.getAlarmDate(),
+                alarmMessageDto.getDescription(), convertDateToUtc(alarmMessageDto.getAlarmDate(), user),
                 alarmMessageDto.getIsAdministrative()).getID();
     }
 
@@ -76,7 +73,7 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
             throw new AlarmException("Alarm not found");
         }
         checkUserPermission(alarmMessage, user);
-        return AlarmMessageMapper.toAlertMessageDto(alarmMessageDao.updateAlarmMessage(alarmId,
+        return mapper.toAlertMessageDto(alarmMessageDao.updateAlarmMessage(alarmId,
                 alarmMessageDto.getDescription(), alarmMessageDto.getAlarmDate()));
     }
 
@@ -87,20 +84,20 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
             throw new AlarmException("Alarm not found");
         }
         checkUserPermission(alarmMessage, user);
-        return AlarmMessageMapper.toAlertMessageDto(alarmMessageDao.getAlarmMessage(alarmId));
+        return mapper.toAlertMessageDto(alarmMessageDao.getAlarmMessage(alarmId));
     }
 
     @Override
     public List<AlarmMessageDto> getAlarmMessagesbyUser(ApplicationUser user) {
         return  alarmMessageDao.getAlarmMessagesbyUserId(user.getId()).stream()
-                .map(AlarmMessageMapper::toAlertMessageDto)
+                .map(mapper::toAlertMessageDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<AlarmMessageDto> getAdministrativeAlarms() {
         return  alarmMessageDao.getAdministrativeAlarmMessages().stream()
-                .map(AlarmMessageMapper::toAlertMessageDto)
+                .map(mapper::toAlertMessageDto)
                 .collect(Collectors.toList());
     }
 
