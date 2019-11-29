@@ -22,7 +22,7 @@ $webResourceManager.requireResource("by.exposit.alarm.alarm-clock-plugin:user-pr
 </form>
     <div class="buttons-container">
         <div class="buttons">
-            <button class="aui-button" id="alarm-create-button">Create alarm</button>
+            <button class="aui-button aui-button-primary" id="alarm-create-button">Create alarm</button>
         </div>
     </div>
 
