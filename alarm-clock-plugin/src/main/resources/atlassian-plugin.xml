@@ -10,30 +10,35 @@
   </plugin-info>  
   <!-- add our i18n resource -->  
   <resource type="i18n" name="i18n" location="alarm-clock-plugin"/>  
-  <!-- add our web resources -->  
+  <!-- Web resources -->
   <web-resource key="alarm-clock-plugin-resources" name="alarm-clock-plugin Web Resources"> 
-    <dependency>com.atlassian.auiplugin:ajs</dependency>  
-    <resource type="download" name="alarm-clock-plugin.css" location="/css/alarm-clock-plugin.css"/>  
-    <resource type="download" name="alarm-clock-plugin.js" location="/js/alarm-clock-plugin.js"/>  
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
     <resource type="download" name="images/" location="/images"/>  
     <context>alarm-clock-plugin</context> 
-  </web-resource>  
+  </web-resource>
+
+  <web-resource name="User profile webresource" i18n-name-key="user-profile-webresource.name" key="user-profile-webresource">
+    <description key="user-profile-webresource.description">The User profile webresource</description>
+    <resource name="alarm-user-profile.js" type="download" location="/js/alarm-clock-plugin.js"/>
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <dependency>com.atlassian.auiplugin:aui-date-picker</dependency>
+    <dependency>com.atlassian.auiplugin:aui-dialog2</dependency>
+  </web-resource>
+
+  <!-- wWeb panels -->
   <web-panel key="custom-profile-panel" location="webpanels.user.profile.summary.custom" weight="150"> 
     <resource name="view" type="velocity" location="templates/profile/user-alarms.vm"/> 
   </web-panel>
 
+  <!--  Active objects-->
   <ao key="ao-module"> 
     <description>Alarm clock plugin AO relations</description>  
     <entity>by.exposit.alarm.ao.entity.AlarmMessage</entity> 
   </ao>
 
-  <rest name="Alarm Message REST Resource" i18n-name-key="alert-message-resource.name" key="alert-message-resource" path="/alarm" version="1.0"> 
+  <!--  REST resource-->
+  <rest name="Alarm Message REST Resource" i18n-name-key="alert-message-resource.name" key="alert-message-resource" path="/alarm" version="1.0">
     <description key="alert-message-resource.description">Webresource for alarm-clock plugin</description> 
   </rest>
 
-  <web-resource name="User profile webresource" i18n-name-key="user-profile-webresource.name" key="user-profile-webresource">
-    <description key="user-profile-webresource.description">The User profile webresource</description>
-    <resource name="alarm-user-profile.js" type="download" location="/js/alarm-clock-plugin.js"/>
-    <dependency>com.atlassian.auiplugin:aui-date-picker</dependency>
-  </web-resource>
 </atlassian-plugin>
