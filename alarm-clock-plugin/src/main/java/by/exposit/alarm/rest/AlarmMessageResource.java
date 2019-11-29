@@ -3,7 +3,6 @@ package by.exposit.alarm.rest;
 import by.exposit.alarm.dto.exception.AlarmException;
 import by.exposit.alarm.dto.model.AlarmMessageDto;
 import by.exposit.alarm.service.AlarmMessageService;
-import com.atlassian.jira.bc.EntityNotFoundException;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +14,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.util.List;
 
 /**
- * REST resource for manipulating alerts in user profile section
+ * CRUD REST resource for manipulating alerts in user profile section
  */
 @Path("/alarm")
 @Component
@@ -31,17 +31,15 @@ public class AlarmMessageResource {
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getAlarms() {
-       return Response.ok(alarmMessageService.getAlarmMessagesbyUser(jiraAuthenticationContext.getLoggedInUser()))
-               .build();
+    public List<AlarmMessageDto> getAlarms() {
+        return alarmMessageService.getAlarmMessagesbyUser(jiraAuthenticationContext.getLoggedInUser());
     }
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     @Path("/{alarmId}")
-    public Response getAlarmById(@PathParam("alarmId") int alarmId) throws AlarmException {
-        return Response.ok(alarmMessageService.getAlarmMessageById(alarmId,
-                jiraAuthenticationContext.getLoggedInUser())).build();
+    public AlarmMessageDto getAlarmById(@PathParam("alarmId") int alarmId) throws AlarmException {
+        return alarmMessageService.getAlarmMessageById(alarmId, jiraAuthenticationContext.getLoggedInUser());
     }
 
     @POST
@@ -49,8 +47,8 @@ public class AlarmMessageResource {
     @Consumes({MediaType.APPLICATION_JSON})
     public Response createAlarm(@Context UriInfo uriInfo, final AlarmMessageDto createDto) throws AlarmException{
         URI location = uriInfo.getAbsolutePathBuilder().path("/" +
-                String.valueOf(alarmMessageService.createAlarmMessage(jiraAuthenticationContext.getLoggedInUser(),
-                        createDto))).build();
+               alarmMessageService.createAlarmMessage(jiraAuthenticationContext.getLoggedInUser(),
+                        createDto)).build();
         return Response.created(location).build();
     }
 
@@ -58,9 +56,16 @@ public class AlarmMessageResource {
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
     @Path("/{alarmId}")
-    public Response updateAlarm(@PathParam("alarmId") int alarmId,  final AlarmMessageDto updateDto)
+    public AlarmMessageDto updateAlarm(@PathParam("alarmId") int alarmId, final AlarmMessageDto updateDto)
             throws AlarmException {
-        return Response.ok(alarmMessageService.updateAlarmMessage(jiraAuthenticationContext.getLoggedInUser(),
-                alarmId, updateDto)).build();
+        return alarmMessageService.updateAlarmMessage(jiraAuthenticationContext.getLoggedInUser(), alarmId, updateDto);
     }
+
+    @DELETE
+    @Path("/{alarmId}")
+    public Response removeAlarm(@PathParam("alarmId") int alarmId) {
+        alarmMessageService.removeAlarm(alarmId);
+        return Response.noContent().build();
+    }
+
 }
