@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>by.exposit.alarm</groupId>
     <artifactId>alarm-clock-plugin</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <organization>
         <name>Bohdan Belokur</name>
         <url>http://www.exposit.by/</url>
@@ -14,7 +14,8 @@
         <url>https://github.com/whereeaglesdare/alarm-clock-jira-plugin</url>
         <connection>scm:git:git://github.com/whereeaglesdare/alarm-clock-jira-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:whereeaglesdare/alarm-clock-jira-plugin.git</developerConnection>
-    </scm>
+      <tag>alarm-clock-plugin-1.0.0</tag>
+  </scm>
     <description>This is the by.exposit.alarm:alarm-clock-plugin plugin for Atlassian JIRA.</description>
     <packaging>atlassian-plugin</packaging>
     <dependencies>
