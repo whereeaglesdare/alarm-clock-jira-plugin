@@ -5,6 +5,7 @@ import by.exposit.alarm.dto.model.AlarmMessageDto;
 import by.exposit.alarm.service.AlarmMessageService;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
+import com.atlassian.sal.api.websudo.WebSudoRequired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -45,6 +46,7 @@ public class AdministrativeAlarmMessageResource {
     @POST
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
+    @WebSudoRequired
     public Response createAlarm(@Context UriInfo uriInfo, final AlarmMessageDto createDto) throws AlarmException{
         URI location = uriInfo.getAbsolutePathBuilder().path("/" +
                 alarmMessageService.createAdministrativeAlarmMessage(jiraAuthenticationContext.getLoggedInUser(),
@@ -56,6 +58,7 @@ public class AdministrativeAlarmMessageResource {
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
     @Path("/{alarmId}")
+    @WebSudoRequired
     public AlarmMessageDto updateAlarm(@PathParam("alarmId") int alarmId, final AlarmMessageDto updateDto)
             throws AlarmException {
         return alarmMessageService.updateAlarmMessage(jiraAuthenticationContext.getLoggedInUser(), alarmId, updateDto);
@@ -63,6 +66,7 @@ public class AdministrativeAlarmMessageResource {
 
     @DELETE
     @Path("/{alarmId}")
+    @WebSudoRequired
     public Response removeAlarm(@PathParam("alarmId") int alarmId) {
         alarmMessageService.removeAlarm(alarmId);
         return Response.noContent().build();
