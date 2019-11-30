@@ -3,7 +3,12 @@ package by.exposit.alarm.ao.impl;
 import by.exposit.alarm.ao.dao.*;
 import by.exposit.alarm.ao.entity.AlarmMessage;
 import com.atlassian.activeobjects.external.ActiveObjects;
+import com.atlassian.jira.datetime.DateTimeFormatter;
+import com.atlassian.jira.datetime.DateTimeFormatterFactory;
+import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +32,7 @@ public class AlarmMessageDaoImpl implements AlarmMessageDao {
     }
 
     @Override
-    public AlarmMessage createAlertMessage(Long userId, String message, Date alertDate, Boolean isAdministrative) {
+    public AlarmMessage createAlarmMessage(Long userId, String message, Date alertDate, Boolean isAdministrative) {
         final AlarmMessage alarm = ao.create(AlarmMessage.class);
         alarm.setDescription(message);
         alarm.setAlarmDate(alertDate);

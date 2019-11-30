@@ -23,7 +23,7 @@ public interface AlarmMessageDao {
      * @return {@link by.exposit.alarm.ao.entity.AlarmMessage} entity
      */
     @Transactional
-    AlarmMessage createAlertMessage(Long userId, String message, Date alertDate, Boolean isAdministrative);
+    AlarmMessage createAlarmMessage(Long userId, String message, Date alertDate, Boolean isAdministrative);
 
     /**
      * Updating AlarmMessage entity
