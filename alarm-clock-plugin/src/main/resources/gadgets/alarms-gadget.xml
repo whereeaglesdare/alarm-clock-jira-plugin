@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs
+            title="__MSG_gadget.title__"
+            title_url="__MSG_gadget.title.url__"
+            description="__MSG_gadget.description__"
+            author="Bohdan Belokur"
+            author_email="belokur.bv@gmail.com"
+            screenshot="http://localhost:2990/jira/s/-km4mlq/805001/b6b48b2829824b869586ac216d119363/8.1.7/_/download/resources/com.atlassian.streams.streams-jira-plugin:activitystream-gadget/images/activity-streams-screenshot.png"
+            thumbnail="http://localhost:2990/jira/s/-km4mlq/805001/b6b48b2829824b869586ac216d119363/8.1.7/_/download/resources/com.atlassian.streams.streams-jira-plugin:activitystream-gadget/images/activity-streams-thumb.png"
+            height="150">
+        <Optional feature="gadget-directory">
+            <Param name="categories">
+                JIRA
+            </Param>
+        </Optional>
+        <Require feature="dynamic-height"/>
+        <Locale messages="__ATLASSIAN_BASE_URL__/download/resources/by.exposit.alarm.alarm-clock-plugin/i18n/alarms-gadget-i18n.xml" />
+        <Require feature="oauthpopup" />
+    </ModulePrefs>
+    <Content type="html" view="profile">
+        <![CDATA[
+        #requireResource("com.atlassian.jira.gadgets:common")
+        #includeResources()
+        <script type="text/javascript">
+            (function () {
+                var gadget = AJS.Gadget({
+                    baseUrl: "__ATLASSIAN_BASE_URL__",
+                    view: {
+                        template: function(args) {
+                            var gadget = this;
+                            var userDetails = AJS.$("<h1/>").text("ID,"+args.alarms[0]["id"]);
+                            console.log(args);
+                            gadget.getView().html(userDetails);
+                        },
+                    args: [{
+                        key: "alarms",
+                        ajaxOptions: function() {
+                            return {
+                                url: "/rest/alarm/1.0/alarm"
+                            };
+                        }
+                    }]
+                }
+            });
+        })();
+        </script>
+        ]]>
+    </Content>
+</Module>

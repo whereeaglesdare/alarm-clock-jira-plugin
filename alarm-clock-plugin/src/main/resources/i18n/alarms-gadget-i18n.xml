@@ -1,0 +1,5 @@
+<messagebundle>
+    <msg name="gadget.title">User alarms gadget</msg>
+    <msg name="gadget.title.url">https://exposit.by/</msg>
+    <msg name="gadget.description">User alarms gadget! Acknowledge you alarms, see your deadlines and messages!</msg>
+</messagebundle>
