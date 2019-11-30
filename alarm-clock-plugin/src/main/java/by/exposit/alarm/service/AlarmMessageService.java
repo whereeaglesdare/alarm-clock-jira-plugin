@@ -61,6 +61,15 @@ public interface AlarmMessageService {
     void removeAlarm(int alarmMessageId);
 
     /**
+     * Creating administrative alarms from admin UI
+     * @param user ApplicationUser
+     * @param alarmMessageDto
+     * @return id of created AlarmMessage entity
+     * @throws AlarmException
+     */
+    int createAdministrativeAlarmMessage(ApplicationUser user, AlarmMessageDto alarmMessageDto) throws AlarmException;
+
+    /**
      * Method for triggering alarm
      * Using in scheduler for notify user
      * @param date system current date

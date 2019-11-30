@@ -11,21 +11,25 @@ import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Implementation of AlaemMessageService
- *
+ * Implementation of {@link by.exposit.alarm.service.AlarmMessageService}
+ * @author  Bohdan Belokur <belokur.bv@gmail.com>
  */
 @Component
 public class AlarmMessageServiceImpl implements AlarmMessageService {
+    /**
+     * Date format recieving from JSON 'date' param
+     */
+    private final String DTF = "yyyy-MM-dd HH:mm";
+
     @Autowired
     private AlarmMessageDao alarmMessageDao;
 
@@ -36,16 +40,29 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
     @ComponentImport
     private DateTimeFormatterFactory formatterFactory;
 
-    private Date convertToDate(String date, ApplicationUser user) {
+
+    /**
+     * Convert user datetime string to Date objects with TZ settings in user profile
+     * All date methods from 3rd party org.joda.time library
+     * @param date string with date and yyyy-MM-dd hh:mm pattern
+     * @param user jira instance user
+     * @return
+     */
+    private Date convertToDate(String date, ApplicationUser user) throws AlarmException{
         DateTimeFormatter formatter = formatterFactory.formatter().forUser(user);
-        DateTimeZone dtz = DateTimeZone.forTimeZone(formatter.getZone());
-        DateTime dt = new DateTime(date, dtz);
-        return dt.toDate();
+        org.joda.time.format.DateTimeFormatter dtf = DateTimeFormat.forPattern(DTF);
+        try {
+            DateTimeZone dtz = DateTimeZone.forTimeZone(formatter.getZone());
+            DateTime dt = dtf.parseDateTime(date).withZone(dtz);
+            return dt.toDate();
+        } catch (IllegalArgumentException ex) {
+            throw new AlarmException("Incorrect date value");
+        }
     }
 
     private void checkDate(Date date) throws AlarmException {
         if (new DateTime(date).compareTo(DateTime.now(DateTimeZone.UTC)) < 0 ) {
-            throw new AlarmException("Incorrect date value");
+            throw new AlarmException("You can not set alarm on this time");
         }
     }
 
@@ -59,9 +76,9 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
     public int createAlarmMessage(ApplicationUser user, AlarmMessageDto alarmMessageDto) throws AlarmException {
         Date utcDate = convertToDate(alarmMessageDto.getAlarmDate(), user);
         checkDate(utcDate);
-        return alarmMessageDao.createAlertMessage(user.getId(),
+        return alarmMessageDao.createAlarmMessage(user.getId(),
                 alarmMessageDto.getDescription(), utcDate,
-                alarmMessageDto.getIsAdministrative()).getID();
+                false).getID();
     }
 
     @Override
@@ -76,6 +93,15 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
                 alarmMessageDto.getDescription(), convertToDate(alarmMessageDto.getAlarmDate(), user)));
     }
 
+    @Override
+    public int createAdministrativeAlarmMessage(ApplicationUser user, AlarmMessageDto alarmMessageDto) throws
+            AlarmException {
+        Date utcDate = convertToDate(alarmMessageDto.getAlarmDate(), user);
+        checkDate(utcDate);
+        return alarmMessageDao.createAlarmMessage(user.getId(),
+                alarmMessageDto.getDescription(), utcDate,
+                true).getID();
+    }
     @Override
     public AlarmMessageDto getAlarmMessageById(int alarmId, ApplicationUser user) throws AlarmException {
         AlarmMessage alarmMessage = alarmMessageDao.getAlarmMessage(alarmId);
