@@ -14,7 +14,10 @@
   <web-resource key="alarm-clock-plugin-resources" name="alarm-clock-plugin Web Resources"> 
     <dependency>com.atlassian.auiplugin:ajs</dependency>
     <resource type="download" name="images/" location="/images"/>  
-    <context>alarm-clock-plugin</context> 
+    <context>alarm-clock-plugin</context>
+    <resource type="download" name="i18n/messages.xml" location="i18n/alarms-gadget-i18n.xml">
+      <param name="content-type" value="text/xml; charset=UTF-8"/>
+    </resource>
   </web-resource>
 
   <web-resource name="User profile webresource" i18n-name-key="user-profile-webresource.name" key="user-profile-webresource">
@@ -23,9 +26,12 @@
     <dependency>com.atlassian.auiplugin:ajs</dependency>
     <dependency>com.atlassian.auiplugin:aui-date-picker</dependency>
     <dependency>com.atlassian.auiplugin:aui-dialog2</dependency>
+      <resource type="download" name="/i18n/messages.xml" location="i18n/alarms-gadget-i18n.xml">
+          <param name="content-type" value="text/xml; charset=UTF-8"/>
+      </resource>
   </web-resource>
 
-  <!-- wWeb panels -->
+  <!-- Web panels -->
   <web-panel key="custom-profile-panel" location="webpanels.user.profile.summary.custom" weight="150"> 
     <resource name="view" type="velocity" location="templates/profile/user-alarms.vm"/> 
   </web-panel>
@@ -38,7 +44,11 @@
 
   <!--  REST resource-->
   <rest name="Alarm Message REST Resource" i18n-name-key="alert-message-resource.name" key="alert-message-resource" path="/alarm" version="1.0">
-    <description key="alert-message-resource.description">Webresource for alarm-clock plugin</description> 
+    <description key="alert-message-resource.description">Webresource for alarm-clock plugin</description>
   </rest>
 
+  <!-- Gadgets -->
+  <gadget key="user-alarms-gadget" name="User alarms gadget"  location="gadgets/alarms-gadget.xml">
+    <description>User alarms gadget</description>
+  </gadget>
 </atlassian-plugin>
