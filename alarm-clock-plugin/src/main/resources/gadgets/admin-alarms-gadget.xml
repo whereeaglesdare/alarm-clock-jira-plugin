@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs
+            title="__MSG_gadget.title__"
+            title_url="__MSG_gadget.title.url__"
+            description="__MSG_gadget.description__"
+            author="Bohdan Belokur"
+            author_email="belokur.bv@gmail.com"
+            screenshot="http://localhost:2990/jira/s/-km4mlq/805001/b6b48b2829824b869586ac216d119363/8.1.7/_/download/resources/com.atlassian.streams.streams-jira-plugin:activitystream-gadget/images/activity-streams-screenshot.png"
+            thumbnail="http://localhost:2990/jira/s/-km4mlq/805001/b6b48b2829824b869586ac216d119363/8.1.7/_/download/resources/com.atlassian.streams.streams-jira-plugin:activitystream-gadget/images/activity-streams-thumb.png"
+            height="150">
+        <Optional feature="gadget-directory">
+            <Param name="categories">
+                JIRA
+            </Param>
+        </Optional>
+        <Require feature="dynamic-height" />
+        <Optional feature="auth-refresh"/>
+        <Locale messages="__ATLASSIAN_BASE_URL__/download/resources/by.exposit.alarm.alarm-clock-plugin/i18n/admin-alarms-gadget-i18n.xml" />
+        <Require feature="oauthpopup" />
+    </ModulePrefs>
+    <Content type="html" view="profile">
+        <![CDATA[
+        #requireResource("com.atlassian.jira.gadgets:common")
+        #requireResource("by.exposit.alarm.alarm-clock-plugin:gadgets-webresource")
+        #includeResources()
+        <script type="text/javascript">
+            function resize(){
+                gadgets.window.adjustHeight();
+            }
+            (function () {
+                var gadget = AJS.Gadget({
+                    baseUrl: "__ATLASSIAN_BASE_URL__",
+                    view: {
+                        template: function(args) {
+                            var gadget = this;
+                            var tbody =  document.getElementById("alarm-table-body");
+                            for (i = 0; i < args.alarms.length; i++) {
+                                addRow(tbody, args.alarms[i].date, args.alarms[i].description, args.alarms[i].isAcknowledged,
+                                        args.alarms[i].isAdministrative);
+                            }
+                            gadget.getView();
+                        },
+                    args: [{
+                        key: "alarms",
+                        ajaxOptions: function() {
+                            return {
+                                url: "/rest/alarm/1.0/admin_alarms"
+                            };
+                        }
+                    }]
+                }
+            });
+
+        })();
+
+        </script>
+        <table id="alarms-table">
+            <thead>
+            <tr>
+                <th id="date-row" width="20%">Date</th>
+                <th id="description-row" width="60%">Description</th>
+                <th id="countdown-row" width="20%">Countdown</th>
+            </tr>
+            </thead>
+            <tbody id="alarm-table-body">
+            </tbody>
+        </table>
+        ]]>
+    </Content>
+</Module>
