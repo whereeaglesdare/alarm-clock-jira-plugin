@@ -63,17 +63,5 @@ public class AlarmMessageMapper {
                 .setId(alarmMessage.getID());
     }
 
-    /**
-     * Method for converting AlarmMessage to AlarmMessageDto
-     * Used in user profile section
-     * @param alarmMessage AlarmMessage entity
-     * @return AlarmMessageDto
-     */
-    public static AlarmMessageDto toAlertMessageUserDto(AlarmMessage alarmMessage) {
-        return new AlarmMessageDto()
-                .setDescription(alarmMessage.getDescription())
-                .setAlarmDate(alarmMessage.getAlarmDate().toString())
-                .setIsAcknowledged(alarmMessage.isAcknowledged());
-    }
 
 }
