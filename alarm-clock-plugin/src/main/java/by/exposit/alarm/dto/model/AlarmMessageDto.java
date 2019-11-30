@@ -20,11 +20,11 @@ public class AlarmMessageDto {
     @XmlElement(name = "id")
     private int id;
 
-    @XmlElement(name = "description")
+    @XmlElement(name = "description", required = true)
     private String description;
 
-    @XmlElement(name = "date")
-    private Date alarmDate;
+    @XmlElement(name = "date", required = true)
+    private String alarmDate;
 
     @XmlElement(name = "isAdministrative")
     private Boolean isAdministrative;
