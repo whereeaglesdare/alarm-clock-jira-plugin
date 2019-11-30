@@ -6,8 +6,8 @@
     <artifactId>alarm-clock-plugin</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <organization>
-        <name>Example Company</name>
-        <url>http://www.example.com/</url>
+        <name>Bohdan Belokur</name>
+        <url>http://www.exposit.by/</url>
     </organization>
     <name>alarm-clock-plugin</name>
     <description>This is the by.exposit.alarm:alarm-clock-plugin plugin for Atlassian JIRA.</description>
