@@ -14,24 +14,32 @@
                 JIRA
             </Param>
         </Optional>
-        <Require feature="dynamic-height"/>
+        <Require feature="dynamic-height" />
+        <Optional feature="auth-refresh"/>
         <Locale messages="__ATLASSIAN_BASE_URL__/download/resources/by.exposit.alarm.alarm-clock-plugin/i18n/alarms-gadget-i18n.xml" />
         <Require feature="oauthpopup" />
     </ModulePrefs>
     <Content type="html" view="profile">
         <![CDATA[
         #requireResource("com.atlassian.jira.gadgets:common")
+        #requireResource("by.exposit.alarm.alarm-clock-plugin:gadgets-webresource")
         #includeResources()
         <script type="text/javascript">
+            function resize(){
+                gadgets.window.adjustHeight();
+            }
             (function () {
                 var gadget = AJS.Gadget({
                     baseUrl: "__ATLASSIAN_BASE_URL__",
                     view: {
                         template: function(args) {
                             var gadget = this;
-                            var userDetails = AJS.$("<h1/>").text("ID,"+args.alarms[0]["id"]);
-                            console.log(args);
-                            gadget.getView().html(userDetails);
+                            var tbody =  document.getElementById("alarm-table-body");
+                            for (i = 0; i < args.alarms.length; i++) {
+                                addRow(tbody, args.alarms[i].date, args.alarms[i].description, args.alarms[i].isAcknowledged,
+                                        args.alarms[i].isAdministrative);
+                            }
+                            gadget.getView();
                         },
                     args: [{
                         key: "alarms",
@@ -43,8 +51,21 @@
                     }]
                 }
             });
+
         })();
+
         </script>
+        <table id="alarms-table">
+            <thead>
+            <tr>
+                <th id="date-row" width="20%">Date</th>
+                <th id="description-row" width="60%">Description</th>
+                <th id="countdown-row" width="20%">Countdown</th>
+            </tr>
+            </thead>
+            <tbody id="alarm-table-body">
+            </tbody>
+        </table>
         ]]>
     </Content>
 </Module>
