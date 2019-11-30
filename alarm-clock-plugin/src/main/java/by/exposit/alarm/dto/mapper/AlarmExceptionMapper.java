@@ -13,7 +13,7 @@ public class AlarmExceptionMapper implements ExceptionMapper<AlarmException>
     @Override
     public Response toResponse(AlarmException exception)
     {
-        return Response.status(Response.Status.NOT_FOUND)
+        return Response.status(Response.Status.BAD_REQUEST)
                 .entity(new CustomErrorModel().setMessage(exception.getMessage())).build();
     }
 }
