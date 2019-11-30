@@ -8,32 +8,37 @@
     <param name="plugin-icon">images/pluginIcon.png</param>  
     <param name="plugin-logo">images/pluginLogo.png</param> 
   </plugin-info>  
-  <!-- i18n resource -->
-  <resource type="i18n" name="i18n" location="alarm-clock-plugin"/>
-  <!--  Downloadable resources-->
-  <resource type="download" name="i18n/alarms-gadget-i18n.xml"
-            location="i18n/alarms-gadget-i18n.xml">
-    <param name="content-type" value="text/xml; charset=UTF-8"/>
-  </resource>
+  <!-- i18n resource -->  
+  <resource type="i18n" name="i18n" location="alarm-clock-plugin"/>  
+  <!--  Downloadable resources-->  
+  <resource type="download" name="i18n/alarms-gadget-i18n.xml" location="i18n/alarms-gadget-i18n.xml"> 
+    <param name="content-type" value="text/xml; charset=UTF-8"/> 
+  </resource>  
   <!-- Web resources -->  
   <web-resource key="alarm-clock-plugin-resources" name="alarm-clock-plugin Web Resources"> 
     <dependency>com.atlassian.auiplugin:ajs</dependency>  
     <resource type="download" name="images/" location="/images"/>  
-    <context>alarm-clock-plugin</context>
+    <context>alarm-clock-plugin</context> 
   </web-resource>  
   <web-resource name="User profile webresource" i18n-name-key="user-profile-webresource.name" key="user-profile-webresource"> 
     <description key="user-profile-webresource.description">The User profile webresource</description>  
     <resource name="alarm-user-profile.js" type="download" location="/js/alarm-clock-plugin.js"/>  
     <dependency>com.atlassian.auiplugin:ajs</dependency>  
     <dependency>com.atlassian.auiplugin:aui-date-picker</dependency>  
-    <dependency>com.atlassian.auiplugin:aui-dialog2</dependency>
-  </web-resource>
-  <web-resource name="Gadgets webresource" i18n-name-key="gadgets-webresource.name" key="gadgets-webresource">
+    <dependency>com.atlassian.auiplugin:aui-dialog2</dependency> 
+  </web-resource>  
+  <web-resource name="Gadgets webresource" i18n-name-key="gadgets-webresource.name" key="gadgets-webresource"> 
     <description key="gadgets-webresource.description">Gadgets webresource</description>
-    <resource name="countdown.js" type="download" location="/js/jquery.countdown.min.js"/>
-    <resource name="gadgets.js" type="download" location="/js/gadgets.js"/>
-    <resource name="gadgets.css" type="download" location="/css/gadgets.css"/>
+    <resource name="gadgets.js" type="download" location="/js/gadgets.js"/>  
+    <resource name="gadgets.css" type="download" location="/css/gadgets.css"/>  
+    <dependency>com.atlassian.auiplugin:ajs</dependency>  
+    <dependency>com.atlassian.auiplugin:table</dependency> 
+  </web-resource>
+  <web-resource name="Admin pref webresource" i18n-name-key="admin-webresource.name" key="admin-webresource">
+    <description key="admin-webresource.description">Admin webresource</description>
+    <resource name="admin.js" type="download" location="/js/admin.js"/>
     <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <dependency>com.atlassian.auiplugin:aui-date-picker</dependency>
     <dependency>com.atlassian.auiplugin:table</dependency>
   </web-resource>
   <!-- Web panels -->  
@@ -53,4 +58,19 @@
   <gadget key="user-alarms-gadget" name="User alarms gadget" location="gadgets/alarms-gadget.xml"> 
     <description>User alarms gadget</description> 
   </gadget>
+  <!-- Servlet -->
+  <servlet name="Admin Alarms Servlet" i18n-name-key="admin-alarms-servlet.name" key="admin-alarms-servlet" class="by.exposit.alarm.servlet.AdminAlarmsServlet"> 
+    <description key="admin-alarms-servlet.description">The Admin Alarms Servlet Plugin</description>  
+    <url-pattern>/admin-alarms</url-pattern>
+  </servlet>
+  <!--  Websection-->
+  <web-section name="Alarms plugin web-section" location="admin_plugins_menu" i18n-name-key="alarms-plugin-web-section.name" key="alarms-plugin-web-section" weight="1000">
+    <description key="alarms-plugin-web-section.description">Alarm plugin websection</description>
+    <label key="alarms-plugin-web-section.label">Alarm plugin websection</label>
+  </web-section>
+  <web-item name="Admin alarms webitem" i18n-name-key="admin-alarms-webitem.name" key="admin-alarms-webitem" section="admin_plugins_menu/alarms-plugin-web-section" weight="1000">
+    <description key="admin-alarms-webitem.description">Alarm plugin admin webitem</description>
+    <label key="admin-alarms-webitem.label"/>
+    <link linkId="integration-plugin-view-link">/plugins/servlet/admin-alarms</link>
+  </web-item>
 </atlassian-plugin>
