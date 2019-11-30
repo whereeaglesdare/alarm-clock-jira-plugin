@@ -1,0 +1,48 @@
+<html>
+<head>
+    <title>Admin alarms</title>
+    $webResourceManager.requireResource("by.exposit.alarm.alarm-clock-plugin:admin-webresource")
+    <meta name="decorator" content="atl.admin">
+</head>
+<body class="page-type-admin">
+<header class="aui-page-header">
+    <h1>Admin alarms</h1>
+</header>
+<h4>Add new alarm</h4>
+
+<form class="aui" id="alarm-creation-form" onsubmit="return false">
+    <div class="field-group">
+        <label for="alarm-date">Alarm date
+            <span class="aui-icon icon-required">(required)</span></label>
+        <input class="aui-date-picker text" id="alarm-date" name="alarm-date" type="date" />
+    </div>
+    <div class="field-group">
+        <label for="time-input">Alarm time<span class="aui-icon icon-required">(required)</span></label>
+        <input class="text" type="time" id="time-input" name="time-input"
+               required>
+    </div>
+    <div class="field-group">
+        <label for="description-input">Description</label>
+        <textarea class="textarea" name="description-input"
+                  id="description-input" placeholder="Your description here..."></textarea>
+    </div>
+    <div class="buttons-container">
+        <div class="buttons">
+            <button class="aui-button aui-button-primary" id="alarm-create-button">Create alarm</button>
+        </div>
+    </div>
+</form>
+
+
+<h4>Alarms</h4>
+<table id="alarms-table" class="aui aui-table-list">
+    <thead>
+    <tr>
+        <th id="date-row">Date</th>
+        <th id="description-row" width="80%">Description</th>
+    </tr>
+    </thead>
+    <tbody id="alarm-table-body">
+    </tbody>
+</table>
+</body>
