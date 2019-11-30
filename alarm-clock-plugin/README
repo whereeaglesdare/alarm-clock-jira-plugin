@@ -1,1 +1,6 @@
-Alarm-clock plugin for jira
+Alarm-clock plugin for Jira
+
+* Allows creating private notifications in user profile settings
+* System/Jira Admministrators can create admin alarms. Admin alarms are public
+* For view admin/user alarm, add User alarms or Admin alarms gadgets to dashboard
+* Admin alarms section located in Manage apps section
