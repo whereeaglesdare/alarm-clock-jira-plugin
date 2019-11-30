@@ -10,6 +10,11 @@
         <url>http://www.exposit.by/</url>
     </organization>
     <name>alarm-clock-plugin</name>
+    <scm>
+        <url>https://github.com/whereeaglesdare/alarm-clock-jira-plugin</url>
+        <connection>scm:git:git://github.com/whereeaglesdare/alarm-clock-jira-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:whereeaglesdare/alarm-clock-jira-plugin.git</developerConnection>
+    </scm>
     <description>This is the by.exposit.alarm:alarm-clock-plugin plugin for Atlassian JIRA.</description>
     <packaging>atlassian-plugin</packaging>
     <dependencies>
