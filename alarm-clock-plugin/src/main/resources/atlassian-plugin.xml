@@ -13,7 +13,10 @@
   <!--  Downloadable resources-->  
   <resource type="download" name="i18n/alarms-gadget-i18n.xml" location="i18n/alarms-gadget-i18n.xml"> 
     <param name="content-type" value="text/xml; charset=UTF-8"/> 
-  </resource>  
+  </resource>
+  <resource type="download" name="i18n/admin-alarms-gadget-i18n.xml" location="i18n/admin-alarms-gadget-i18n.xml">
+    <param name="content-type" value="text/xml; charset=UTF-8"/>
+  </resource>
   <!-- Web resources -->  
   <web-resource key="alarm-clock-plugin-resources" name="alarm-clock-plugin Web Resources"> 
     <dependency>com.atlassian.auiplugin:ajs</dependency>  
@@ -57,6 +60,9 @@
   <!-- Gadgets -->  
   <gadget key="user-alarms-gadget" name="User alarms gadget" location="gadgets/alarms-gadget.xml"> 
     <description>User alarms gadget</description> 
+  </gadget>
+  <gadget key="admin-alarms-gadget" name="Admin alarms gadget" location="gadgets/admin-alarms-gadget.xml">
+    <description>Admin alarms gadget</description>
   </gadget>
   <!-- Servlet -->
   <servlet name="Admin Alarms Servlet" i18n-name-key="admin-alarms-servlet.name" key="admin-alarms-servlet" class="by.exposit.alarm.servlet.AdminAlarmsServlet"> 
