@@ -12,6 +12,8 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
  */
 @Component
 public class AlarmMessageServiceImpl implements AlarmMessageService {
+    private static final Logger log = LoggerFactory.getLogger(AlarmMessageServiceImpl.class);
     /**
      * Date format recieving from JSON 'date' param
      */
@@ -56,18 +59,22 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
             DateTime dt = dtf.parseDateTime(date).withZone(dtz);
             return dt.toDate();
         } catch (IllegalArgumentException ex) {
+            log.warn("User " + user.getDisplayName() + " entered incorrect date. User time " +  date +
+                    " offset " + formatter.getZone().getDisplayName());
             throw new AlarmException("Incorrect date value");
         }
     }
 
     private void checkDate(Date date) throws AlarmException {
         if (new DateTime(date).compareTo(DateTime.now(DateTimeZone.UTC)) < 0 ) {
+            log.warn("User entered incorrect date. User date " + date.toString());
             throw new AlarmException("You can not set alarm on this time");
         }
     }
 
     private void checkUserPermission(AlarmMessage alarmMessage, ApplicationUser user) throws AlarmException {
         if (!user.getId().equals(alarmMessage.getUserId())) {
+            log.warn("User " + user.getDisplayName() + " have no permissions to saw alarm " + alarmMessage.getID());
             throw new AlarmException("Alarm not found");
         }
     }
@@ -89,6 +96,7 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
             throw new AlarmException("Alarm not found");
         }
         checkUserPermission(alarmMessage, user);
+        log.info("User " + user.getDisplayName() + " creates updated alarm with id " + alarmId);
         return mapper.toAlertMessageDto(alarmMessageDao.updateAlarmMessage(alarmId,
                 alarmMessageDto.getDescription(), convertToDate(alarmMessageDto.getAlarmDate(), user)));
     }
@@ -98,14 +106,17 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
             AlarmException {
         Date utcDate = convertToDate(alarmMessageDto.getAlarmDate(), user);
         checkDate(utcDate);
+        log.info("Creating administrative alarm by user " + user. getDisplayName());
         return alarmMessageDao.createAlarmMessage(user.getId(),
                 alarmMessageDto.getDescription(), utcDate,
                 true).getID();
     }
+
     @Override
     public AlarmMessageDto getAlarmMessageById(int alarmId, ApplicationUser user) throws AlarmException {
         AlarmMessage alarmMessage = alarmMessageDao.getAlarmMessage(alarmId);
         if(alarmMessage == null) {
+            log.warn("Alarm not found with id " + alarmId);
             throw new AlarmException("Alarm not found");
         }
         checkUserPermission(alarmMessage, user);
@@ -114,6 +125,7 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
 
     @Override
     public List<AlarmMessageDto> getAlarmMessagesbyUser(ApplicationUser user) {
+        log.info("User " + user.getDisplayName() + " gets his own alarms");
         return  alarmMessageDao.getAlarmMessagesbyUserId(user.getId()).stream()
                 .map(mapper::toAlertMessageDto)
                 .collect(Collectors.toList());
@@ -121,6 +133,7 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
 
     @Override
     public List<AlarmMessageDto> getAdministrativeAlarms() {
+        log.info("Getting administrative alarms");
         return  alarmMessageDao.getAdministrativeAlarmMessages().stream()
                 .map(mapper::toAlertMessageDto)
                 .collect(Collectors.toList());
@@ -128,6 +141,7 @@ public class AlarmMessageServiceImpl implements AlarmMessageService {
 
     @Override
     public void removeAlarm(int alarmMessageId) {
+        log.info("Removing alarm by id " + alarmMessageId);
         AlarmMessage alarmMessage = alarmMessageDao.getAlarmMessage(alarmMessageId);
         if(alarmMessage != null) {
             alarmMessageDao.removeAlarmMessage(alarmMessage);
