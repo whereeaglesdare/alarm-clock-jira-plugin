@@ -1,6 +1,8 @@
 AJS.$(document).ready(function() {
+    //Datepicker initialization
     AJS.$('#alarm-date').datePicker({'overrideBrowserDefault': true});
 
+    // Getting data from REST resource and displaying in user profile table
     function setTableValues(selector, integration, status, dateFrom, dateTo, action) {
         $.ajax({
             dataType: "json",
@@ -12,14 +14,7 @@ AJS.$(document).ready(function() {
              }
         });
     }
-
-    function addRow(tbody, date, description, isAcknowledged, isAdministrative) {
-        var row = tbody.insertRow(-1);
-        var d = new Date();
-        row.insertCell(0).innerHTML = date;
-        row.insertCell(1).innerHTML  = description;
-    }
-
+    // AJAX call for creating new alarm
     AJS.$("#alarm-create-button").on('click', function (e) {
         var formData = {
             "date": $("#alarm-date").val() + " " + $("#time-input").val(),
@@ -54,6 +49,14 @@ AJS.$(document).ready(function() {
              }
         });
      });
+
+    // Adding row to table
+    function addRow(tbody, date, description, isAcknowledged, isAdministrative) {
+        var row = tbody.insertRow(-1);
+        var d = new Date();
+        row.insertCell(0).innerHTML = date;
+        row.insertCell(1).innerHTML  = description;
+    }
 
     setTableValues("alarms-table");
 
