@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>by.exposit.alarm</groupId>
     <artifactId>alarm-clock-plugin</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <organization>
         <name>Bohdan Belokur</name>
         <url>http://www.exposit.by/</url>
