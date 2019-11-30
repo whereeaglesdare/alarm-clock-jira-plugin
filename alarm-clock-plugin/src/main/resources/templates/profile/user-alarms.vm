@@ -3,7 +3,7 @@ $webResourceManager.requireResource("by.exposit.alarm.alarm-clock-plugin:user-pr
 <h3>Alarms</h3>
 <h4>Add new alarm</h4>
 
-<form class="aui">
+<form class="aui" id="alarm-creation-form" onsubmit="return false">
     <div class="field-group">
         <label for="alarm-date">Alarm date
             <span class="aui-icon icon-required">(required)</span></label>
@@ -19,12 +19,13 @@ $webResourceManager.requireResource("by.exposit.alarm.alarm-clock-plugin:user-pr
         <textarea class="textarea" name="description-input"
                   id="description-input" placeholder="Your description here..."></textarea>
     </div>
-</form>
     <div class="buttons-container">
         <div class="buttons">
             <button class="aui-button aui-button-primary" id="alarm-create-button">Create alarm</button>
         </div>
     </div>
+</form>
+
 
 <h4>Alarms</h4>
 <table id="alarms-table" class="aui aui-table-list">

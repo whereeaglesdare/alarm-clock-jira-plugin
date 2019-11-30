@@ -16,17 +16,13 @@ AJS.$(document).ready(function() {
     function addRow(tbody, date, description, isAcknowledged, isAdministrative) {
         var row = tbody.insertRow(-1);
         var d = new Date();
-        row.insertCell(0).innerHTML = getFormattedDate(new Date(date));
+        row.insertCell(0).innerHTML = date;
         row.insertCell(1).innerHTML  = description;
-    }
-
-    function getFormattedDate(m) {
-        return m.getUTCFullYear() +"/"+ (m.getUTCMonth()+1) +"/"+ m.getUTCDate() + " " + m.getUTCHours() + ":" + m.getUTCMinutes();
     }
 
     AJS.$("#alarm-create-button").on('click', function (e) {
         var formData = {
-            "date": new Date($("#alarm-date").val() + " " + $("#time-input").val()).getTime(),
+            "date": $("#alarm-date").val() + " " + $("#time-input").val(),
             "description": $("#description-input").val()
         }
         $.ajax({
@@ -43,12 +39,16 @@ AJS.$(document).ready(function() {
                  body: "Your alarm successfully created",
                  close: "auto"
              });
+
+             $('#alarm-table-body').empty();
+             setTableValues("alarms-table");
+             $("#alarm-creation-form")[0].reset();
         })
         .fail(function(data) {
-             if (data.message) {
+             if (data) {
                   AJS.flag({
                      type: 'error',
-                     body: data.message,
+                     body: data.responseJSON.message,
                      close: "auto"
                  });
              }
@@ -56,5 +56,6 @@ AJS.$(document).ready(function() {
      });
 
     setTableValues("alarms-table");
+
 });
 
