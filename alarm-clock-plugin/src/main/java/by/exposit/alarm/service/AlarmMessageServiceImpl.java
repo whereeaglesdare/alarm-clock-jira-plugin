@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 /**
  * Implementation of {@link by.exposit.alarm.service.AlarmMessageService}
- * @author  Bohdan Belokur <belokur.bv@gmail.com>
+ * @author  Bohdan Belokur
  */
 @Component
 public class AlarmMessageServiceImpl implements AlarmMessageService {

@@ -63,9 +63,9 @@ public interface AlarmMessageService {
     /**
      * Creating administrative alarms from admin UI
      * @param user ApplicationUser
-     * @param alarmMessageDto
+     * @param alarmMessageDto model of AM entity
      * @return id of created AlarmMessage entity
-     * @throws AlarmException
+     * @throws AlarmException basic validation exception
      */
     int createAdministrativeAlarmMessage(ApplicationUser user, AlarmMessageDto alarmMessageDto) throws AlarmException;
 
