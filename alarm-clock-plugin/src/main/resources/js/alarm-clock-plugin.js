@@ -3,7 +3,7 @@ AJS.$(document).ready(function() {
     AJS.$('#alarm-date').datePicker({'overrideBrowserDefault': true});
 
     // Getting data from REST resource and displaying in user profile table
-    function setTableValues(selector, integration, status, dateFrom, dateTo, action) {
+    function setTableValues(selector) {
         $.ajax({
             dataType: "json",
             url: AJS.contextPath() + "/rest/alarm/1.0/alarm",
