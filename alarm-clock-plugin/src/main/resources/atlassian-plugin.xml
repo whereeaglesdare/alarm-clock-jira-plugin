@@ -43,6 +43,7 @@
     <dependency>com.atlassian.auiplugin:ajs</dependency>
     <dependency>com.atlassian.auiplugin:aui-date-picker</dependency>
     <dependency>com.atlassian.auiplugin:table</dependency>
+    <dependency>com.atlassian.auiplugin:aui-dialog2</dependency>
   </web-resource>
   <!-- Web panels -->  
   <web-panel key="custom-profile-panel" location="webpanels.user.profile.summary.custom" weight="150"> 
