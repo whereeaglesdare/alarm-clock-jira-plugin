@@ -45,4 +45,37 @@
     <tbody id="alarm-table-body">
     </tbody>
 </table>
+
+<!--Modal window for editing  alarms-->
+<section id="edit-alarm-dialog" class="aui-dialog2 aui-dialog2-medium aui-layer" role="dialog" aria-hidden="true">
+    <header class="aui-dialog2-header">
+        <h2 class="aui-dialog2-header-main">Editing alarm</h2>
+        <a class="aui-dialog2-header-close">
+            <span class="aui-icon aui-icon-small aui-iconfont-close-dialog">Close</span>
+        </a>
+    </header>
+    <form class="aui" id="alarm-updating-form" onsubmit="return false">
+        <div class="field-group">
+            <label for="alarm-date">Alarm date
+                <span class="aui-icon icon-required">(required)</span></label>
+            <input class="aui-date-picker text" id="alarm-date-update" name="alarm-date-update" type="date" />
+        </div>
+        <div class="field-group">
+            <label for="time-input">Alarm time<span class="aui-icon icon-required">(required)</span></label>
+            <input class="text" type="time" id="time-input-update" name="time-input-update"
+                   required>
+        </div>
+        <div class="field-group">
+            <label for="description-input">Description</label>
+            <textarea class="textarea" name="description-input-update"
+                      id="description-input-update" placeholder="Your description here..."></textarea>
+        </div>
+    </form>
+    <footer class="aui-dialog2-footer">
+        <div class="aui-dialog2-footer-actions">
+            <button id="dialog-submit-button" id="alarm-update-button" class="aui-button aui-button-primary">Update</button>
+        </div>
+    </footer>
+</section>
 </body>
+
